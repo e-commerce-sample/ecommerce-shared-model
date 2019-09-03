@@ -1,5 +1,6 @@
-package com.ecommerce.shared.event;
+package com.ecommerce.shared.event.publish;
 
+import com.ecommerce.shared.event.DomainEvent;
 import com.ecommerce.shared.utils.DistributedLockExecutor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockConfiguration;

@@ -1,17 +1,17 @@
 package com.ecommerce.shared.model;
 
 
-import com.ecommerce.shared.event.DomainEventPublishingRecorder;
+import com.ecommerce.shared.event.publish.DomainEventPublishingRecorder;
 
 public abstract class BaseRepository<AR extends BaseAggregate> {
-    private DomainEventPublishingRecorder domainEventPublishingRecorder;
+    private DomainEventPublishingRecorder recorder;
 
-    public BaseRepository(DomainEventPublishingRecorder domainEventPublishingRecorder) {
-        this.domainEventPublishingRecorder = domainEventPublishingRecorder;
+    public BaseRepository(DomainEventPublishingRecorder recorder) {
+        this.recorder = recorder;
     }
 
     public void save(AR aggregate) {
-        domainEventPublishingRecorder.record(aggregate.getEvents());
+        recorder.record(aggregate.getEvents());
         aggregate.clearEvents();
         doSave(aggregate);
     }

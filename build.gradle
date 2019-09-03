@@ -35,6 +35,8 @@ dependencies {
 
     //jackson dependencies
     api('com.fasterxml.jackson.core:jackson-core:2.9.9')
+    api('org.aspectj:aspectjrt:1.9.2')
+
     implementation('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.9')
     implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.9')
     implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9')
@@ -76,7 +78,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.ecommerce'
             artifactId = 'ecommerce-shared-model'
-            version = '0.8-SNAPSHOT'
+            version = '0.9-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"

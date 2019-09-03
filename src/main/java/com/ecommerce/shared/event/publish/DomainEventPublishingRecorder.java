@@ -1,4 +1,6 @@
-package com.ecommerce.shared.event;
+package com.ecommerce.shared.event.publish;
+
+import com.ecommerce.shared.event.DomainEvent;
 
 import java.util.List;
 
