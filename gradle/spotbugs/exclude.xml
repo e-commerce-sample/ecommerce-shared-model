@@ -3,11 +3,11 @@
     <!--如何设置请参考：https://spotbugs.readthedocs.io/en/stable/filter.html-->
 
     <Match>
-        <Package name="com.ecommerce.sdk.base"/>
+        <Package name="com.ecommerce.shared.spike"/>
     </Match>
 
     <Match>
-        <Package name="~com\.ecommerce\.sdk\.base\.spike.*"/>
+        <Package name="~com\.ecommerce\.shared\.spike.*"/>
     </Match>
 
     <Match>

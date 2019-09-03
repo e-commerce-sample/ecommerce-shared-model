@@ -11,6 +11,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'idea'
 }
 
 repositories {
@@ -18,25 +19,20 @@ repositories {
     maven { url "https://mymavenrepo.com/repo/2w5k9sU2AsKfaYehyqno/" }
 }
 
-
-def theGroup = 'com.ecommerce'
-def theArtifactName = 'ecommerce-sdk-base'
-def theVersion = '0.1-SNAPSHOT'
-group = theGroup
-archivesBaseName = theArtifactName
-version = theVersion
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.5.1')
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
 
     //test dependencies
+    testImplementation platform('org.junit:junit-bom:5.5.1')
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation('org.junit.jupiter:junit-jupiter-engine')
     testImplementation('org.mockito:mockito-junit-jupiter:2.26.0')
-
 }
 
 
@@ -50,7 +46,7 @@ tasks.withType(Test) {
 }
 
 wrapper {
-    gradleVersion = '5.2.1'
+    gradleVersion = '5.6'
 }
 
 
@@ -59,13 +55,12 @@ task sourcesJar(type: Jar) {
     archiveClassifier = 'sources'
 }
 
-
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = theGroup
-            artifactId = theArtifactName
-            version = theVersion
+            groupId = 'com.ecommerce'
+            artifactId = 'ecommerce-shared-model'
+            version = '0.2-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"
@@ -81,7 +76,6 @@ publishing {
 }
 
 
-apply from: "${rootProject.projectDir}/gradle/idea.gradle"
 apply from: "${rootProject.projectDir}/gradle/dependency-check/dependency-check.gradle"
 apply from: "${rootProject.projectDir}/gradle/spotbugs/spotbugs.gradle"
 apply from: "${rootProject.projectDir}/gradle/checkstyle/checkstyle.gradle"

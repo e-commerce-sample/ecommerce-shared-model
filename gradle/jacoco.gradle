@@ -6,8 +6,8 @@ ext {
 
     // 配置需要忽略的文件
     jacocoExcludes = [
-            'com/ecommerce/sdk/base/spike/**',
-            'com/ecommerce/sdk/common/**'
+            'com/ecommerce/shared/spike/**',
+            'com/ecommerce/shared/common/**'
     ]
 }
 

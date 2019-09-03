@@ -1,4 +1,4 @@
-package com.ecommerce.sdk.base;
+package com.ecommerce.shared;
 
 import java.time.Instant;
 import java.util.UUID;
