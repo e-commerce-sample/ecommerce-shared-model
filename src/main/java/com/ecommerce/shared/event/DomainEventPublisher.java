@@ -9,14 +9,17 @@ import java.util.List;
 
 
 @Slf4j
-public abstract class DomainEventPublisher {
-    private final DomainEventPublishingRecorder domainEventPublishingRecorder;
+public class DomainEventPublisher {
+    private final DomainEventPublishingRecorder recorder;
     private final DistributedLockExecutor lockExecutor;
+    private final DomainEventSender sender;
 
-    public DomainEventPublisher(DomainEventPublishingRecorder domainEventPublishingRecorder,
-                                DistributedLockExecutor lockExecutor) {
-        this.domainEventPublishingRecorder = domainEventPublishingRecorder;
+    public DomainEventPublisher(DomainEventPublishingRecorder recorder,
+                                DistributedLockExecutor lockExecutor,
+                                DomainEventSender sender) {
+        this.recorder = recorder;
         this.lockExecutor = lockExecutor;
+        this.sender = sender;
     }
 
     public void publish() {
@@ -26,13 +29,13 @@ public abstract class DomainEventPublisher {
     }
 
     private Void doPublish() {
-        List<DomainEvent> newestEvents = domainEventPublishingRecorder.toBePublishedEvents();
+        List<DomainEvent> newestEvents = recorder.toBePublishedEvents();
         newestEvents.forEach(event -> {
             try {
-                domainEventPublishingRecorder.increasePublishTry(event.get_id());
-                send(event);
+                recorder.increasePublishTry(event.get_id());
+                sender.send(event);
                 log.debug("Published {}.", event);
-                domainEventPublishingRecorder.delete(event.get_id());
+                recorder.delete(event.get_id());
             } catch (Throwable t) {
                 log.error("Error while publish domain event {}:{}", event, t.getMessage());
             }
@@ -40,9 +43,6 @@ public abstract class DomainEventPublisher {
         return null;
     }
 
-
-    //Using actual messaging mechanism(e.g. Kafka/RabbitMQ) to sent the event
-    protected abstract void send(DomainEvent event);
 }
 
 

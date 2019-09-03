@@ -25,4 +25,4 @@ public enum CommonErrorCode implements ErrorCode {
     public String getCode() {
         return this.name();
     }
-    }
+}

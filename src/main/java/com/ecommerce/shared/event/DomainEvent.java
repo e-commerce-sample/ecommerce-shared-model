@@ -3,7 +3,6 @@ package com.ecommerce.shared.event;
 import com.ecommerce.shared.utils.UuidGenerator;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import static java.time.Instant.now;
 
