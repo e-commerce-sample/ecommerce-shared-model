@@ -37,12 +37,12 @@ dependencies {
     api('org.aspectj:aspectjrt:1.9.2')
 
     //jackson dependencies
-    implementation('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.9')
-    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.9')
-    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9')
-    api('com.fasterxml.jackson.core:jackson-core:2.9.9')
-    api('com.fasterxml.jackson.core:jackson-databind:2.9.9')
-    api('com.fasterxml.jackson.core:jackson-annotations:2.9.9')
+    implementation('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.8')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.8')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8')
+    api('com.fasterxml.jackson.core:jackson-core:2.9.8')
+    api('com.fasterxml.jackson.core:jackson-databind:2.9.8')
+    api('com.fasterxml.jackson.core:jackson-annotations:2.9.8')
 
 
     api('net.javacrumbs.shedlock:shedlock-core:2.5.0')
@@ -79,7 +79,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.ecommerce'
             artifactId = 'ecommerce-shared-model'
-            version = '0.11-SNAPSHOT'
+            version = '0.12-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"
