@@ -1,4 +1,4 @@
-package com.ecommerce.shared;
+package com.ecommerce.shared.model;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

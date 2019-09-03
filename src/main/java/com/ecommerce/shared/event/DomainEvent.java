@@ -1,4 +1,6 @@
-package com.ecommerce.shared;
+package com.ecommerce.shared.event;
+
+import com.ecommerce.shared.utils.UuidGenerator;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,7 +13,7 @@ public abstract class DomainEvent {
     private final Instant _createdAt;
 
     protected DomainEvent() {
-        this._id = UUID.randomUUID().toString().replace("-", "");
+        this._id = UuidGenerator.newUuid();
         this._createdAt = now();
     }
 

@@ -3,8 +3,8 @@ buildscript {
         maven { url "https://maven.aliyun.com/repository/central" }
     }
     dependencies {
-        classpath "org.owasp:dependency-check-gradle:5.0.0-M2"
-        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.7.1"
+        classpath "org.owasp:dependency-check-gradle:5.2.1"
+        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0"
     }
 }
 
@@ -27,6 +27,20 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
 
+    implementation('com.google.guava:guava:27.0.1-jre')
+    implementation('org.apache.commons:commons-lang3:3.9')
+    implementation('org.apache.commons:commons-collections4:4.4')
+
+    //jackson dependencies
+    api('com.fasterxml.jackson.core:jackson-core:2.9.9')
+    implementation('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.9')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.9')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9')
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.9.9')
+    implementation('com.fasterxml.jackson.core:jackson-annotations:2.9.9')
+
+
+    api('net.javacrumbs.shedlock:shedlock-core:2.5.0')
 
     //test dependencies
     testImplementation platform('org.junit:junit-bom:5.5.1')
@@ -60,7 +74,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.ecommerce'
             artifactId = 'ecommerce-shared-model'
-            version = '0.2-SNAPSHOT'
+            version = '0.4-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"
