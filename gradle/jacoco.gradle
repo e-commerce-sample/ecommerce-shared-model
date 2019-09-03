@@ -1,0 +1,55 @@
+apply plugin: "jacoco"
+
+ext {
+    jacocoLineMin = 0 // Line覆盖率
+    jacocoBranchMin = 0  //分支覆盖率
+
+    // 配置需要忽略的文件
+    jacocoExcludes = [
+            'com/ecommerce/sdk/base/spike/**',
+            'com/ecommerce/sdk/common/**'
+    ]
+}
+
+//Unit test===========================
+//Unit test report
+jacocoTestReport {
+    shouldRunAfter test
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExcludes)
+        })
+    }
+}
+
+//Unit test code coverage
+jacocoTestCoverageVerification {
+    shouldRunAfter test
+    executionData test
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = jacocoLineMin
+            }
+        }
+
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'BRANCH'
+                minimum = jacocoBranchMin
+            }
+        }
+    }
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExcludes)
+        })
+    }
+}
+
+jacocoTestCoverageVerification.dependsOn jacocoTestReport
+check.dependsOn jacocoTestReport
+check.dependsOn jacocoTestCoverageVerification

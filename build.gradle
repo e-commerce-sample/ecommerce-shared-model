@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/central" }
+    }
+    dependencies {
+        classpath "org.owasp:dependency-check-gradle:5.0.0-M2"
+        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.7.1"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    maven { url "https://maven.aliyun.com/repository/central" }
+    maven { url "https://mymavenrepo.com/repo/2w5k9sU2AsKfaYehyqno/" }
+}
+
+
+def theGroup = 'com.ecommerce'
+def theArtifactName = 'ecommerce-sdk-base'
+def theVersion = '0.1-SNAPSHOT'
+group = theGroup
+archivesBaseName = theArtifactName
+version = theVersion
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.5.1')
+
+    //test dependencies
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation('org.junit.jupiter:junit-jupiter-engine')
+    testImplementation('org.mockito:mockito-junit-jupiter:2.26.0')
+
+}
+
+
+configurations.all {
+    exclude group: "junit", module: "junit"
+    exclude group: "org.assertj", module: "assertj-core"
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+wrapper {
+    gradleVersion = '5.2.1'
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = theGroup
+            artifactId = theArtifactName
+            version = theVersion
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = "https://mymavenrepo.com/repo/Cd07WrKAtJ9Kq7PBaTuf/"
+        }
+    }
+}
+
+
+apply from: "${rootProject.projectDir}/gradle/idea.gradle"
+apply from: "${rootProject.projectDir}/gradle/dependency-check/dependency-check.gradle"
+apply from: "${rootProject.projectDir}/gradle/spotbugs/spotbugs.gradle"
+apply from: "${rootProject.projectDir}/gradle/checkstyle/checkstyle.gradle"
+apply from: "${rootProject.projectDir}/gradle/git-hooks/git-hooks.gradle"
+apply from: "${rootProject.projectDir}/gradle/version-info.gradle"
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
