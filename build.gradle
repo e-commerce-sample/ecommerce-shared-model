@@ -30,6 +30,8 @@ dependencies {
     implementation('com.google.guava:guava:27.0.1-jre')
     implementation('org.apache.commons:commons-lang3:3.9')
     implementation('org.apache.commons:commons-collections4:4.4')
+    implementation('javax.validation:validation-api:2.0.1.Final')
+
 
     //jackson dependencies
     api('com.fasterxml.jackson.core:jackson-core:2.9.9')
@@ -74,7 +76,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.ecommerce'
             artifactId = 'ecommerce-shared-model'
-            version = '0.6-SNAPSHOT'
+            version = '0.8-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"
