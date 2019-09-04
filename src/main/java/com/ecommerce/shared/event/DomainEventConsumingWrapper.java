@@ -1,6 +1,7 @@
-package com.ecommerce.shared.event.consume;
+package com.ecommerce.shared.event;
 
 import com.ecommerce.shared.event.DomainEvent;
+import com.ecommerce.shared.event.DomainEventRecorder;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -10,10 +11,10 @@ import java.util.Optional;
 @Slf4j
 public class DomainEventConsumingWrapper {
 
-    private DomainEventConsumingRecorder recorder;
+    private DomainEventRecorder eventRecorder;
 
-    public DomainEventConsumingWrapper(DomainEventConsumingRecorder recorder) {
-        this.recorder = recorder;
+    public DomainEventConsumingWrapper(DomainEventRecorder eventRecorder) {
+        this.eventRecorder = eventRecorder;
     }
 
     public Object recordAndConsume(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -27,13 +28,12 @@ public class DomainEventConsumingWrapper {
         }
 
         DomainEvent event = (DomainEvent) optionalEvent.get();
-        if (!recorder.record(event)) {
+        if (!eventRecorder.recordForConsuming(event)) {
             log.warn("Duplicated {} skipped.", event);
             return null;
         }
 
         return joinPoint.proceed();
-
 
     }
 }

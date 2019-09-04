@@ -1,36 +1,31 @@
 package com.ecommerce.shared.event;
 
 import com.ecommerce.shared.utils.UuidGenerator;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 import static java.time.Instant.now;
 
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class DomainEvent {
-    private final String _id;
-    private final Instant _createdAt;
+    private String id;
+    private Instant createdAt;
+    private String aggregate;
 
-    protected DomainEvent() {
-        this._id = UuidGenerator.newUuid();
-        this._createdAt = now();
-    }
-
-    public String get_id() {
-        return _id;
-    }
-
-
-    public Instant get_createdAt() {
-        return _createdAt;
+    protected DomainEvent(String aggregate) {
+        this.id = UuidGenerator.newUuid();
+        this.createdAt = now();
+        this.aggregate = aggregate;
     }
 
     @Override
-    public String
-    toString() {
-        return "DomainEvent{" +
-                "_id='" + _id + '\'' +
-                ", _createdAt=" + _createdAt +
-                '}';
+    public String toString() {
+        return this.getClass().getSimpleName() + "[" + id + "]";
     }
+
 }

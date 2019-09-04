@@ -1,4 +1,4 @@
-package com.ecommerce.shared.event.publish;
+package com.ecommerce.shared.event;
 
 import com.ecommerce.shared.event.DomainEvent;
 

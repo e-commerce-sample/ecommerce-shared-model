@@ -1,6 +1,5 @@
-package com.ecommerce.shared.event.publish;
+package com.ecommerce.shared.event;
 
-import com.ecommerce.shared.event.DomainEvent;
 import com.ecommerce.shared.utils.DistributedLockExecutor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockConfiguration;
@@ -11,14 +10,14 @@ import java.util.List;
 
 @Slf4j
 public class DomainEventPublisher {
-    private final DomainEventPublishingRecorder recorder;
+    private final DomainEventRecorder eventRecorder;
     private final DistributedLockExecutor lockExecutor;
     private final DomainEventSender sender;
 
-    public DomainEventPublisher(DomainEventPublishingRecorder recorder,
+    public DomainEventPublisher(DomainEventRecorder eventRecorder,
                                 DistributedLockExecutor lockExecutor,
                                 DomainEventSender sender) {
-        this.recorder = recorder;
+        this.eventRecorder = eventRecorder;
         this.lockExecutor = lockExecutor;
         this.sender = sender;
     }
@@ -30,13 +29,13 @@ public class DomainEventPublisher {
     }
 
     private Void doPublish() {
-        List<DomainEvent> newestEvents = recorder.toBePublishedEvents();
+        List<DomainEvent> newestEvents = eventRecorder.toBePublishedEvents();
         newestEvents.forEach(event -> {
             try {
-                recorder.increasePublishTry(event.get_id());
+                eventRecorder.increasePublishTry(event.getId());
                 sender.send(event);
                 log.debug("Published {}.", event);
-                recorder.delete(event.get_id());
+                eventRecorder.markAsPublished(event.getId());
             } catch (Throwable t) {
                 log.error("Error while publish domain event {}:{}", event, t.getMessage());
             }
