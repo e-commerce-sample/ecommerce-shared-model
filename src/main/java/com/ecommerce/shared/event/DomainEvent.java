@@ -11,7 +11,7 @@ import static java.time.Instant.now;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class DomainEvent {
     private String id;
     private Instant createdAt;
