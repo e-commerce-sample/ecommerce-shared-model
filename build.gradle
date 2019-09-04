@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.owasp:dependency-check-gradle:5.2.1"
@@ -79,7 +79,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.ecommerce'
             artifactId = 'ecommerce-shared-model'
-            version = '0.11-SNAPSHOT'
+            version = '0.12-SNAPSHOT'
             from components.java
             artifact sourcesJar {
                 classifier "sources"
