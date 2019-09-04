@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+// Common pagination wrapper
 public class PagedResource<T> {
     private int totalNumber;
     private int pageIndex;
