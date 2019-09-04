@@ -1,7 +1,5 @@
 package com.ecommerce.shared.event;
 
-import com.ecommerce.shared.event.DomainEvent;
-import com.ecommerce.shared.event.DomainEventRecorder;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 
