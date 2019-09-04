@@ -9,7 +9,7 @@ class DomainEventTest {
 
     @Test
     public void shouldCreateEvent() {
-        DomainEvent domainEvent = new DomainEvent("order") {
+        DomainEvent domainEvent = new DomainEvent() {
         };
 
         assertNotNull(domainEvent);
