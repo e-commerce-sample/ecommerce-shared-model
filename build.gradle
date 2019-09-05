@@ -74,9 +74,9 @@ task sourcesJar(type: Jar) {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.ecommerce'
-            artifactId = 'ecommerce-shared-model'
-            version = '0.12-SNAPSHOT'
+            groupId = rootProject.group
+            artifactId = rootProject.artifact
+            version = rootProject.version
             from components.java
             artifact sourcesJar {
                 classifier "sources"
