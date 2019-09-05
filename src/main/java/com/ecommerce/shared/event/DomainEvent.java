@@ -12,10 +12,16 @@ import static java.time.Instant.now;
 public abstract class DomainEvent {
     private String id;
     private Instant createdAt;
+    private String aggregate;
 
+    @Deprecated
     protected DomainEvent() {
+    }
+
+    protected DomainEvent(String aggregate) {
         this.id = UuidGenerator.newUuid();
         this.createdAt = now();
+        this.aggregate = aggregate;
     }
 
     @Override
