@@ -22,22 +22,27 @@ public class DefaultDomainEventPublisher implements DomainEventPublisher {
         this.sender = sender;
     }
 
-    public void publishNextBatch(int size, boolean containsPreviousFailed) {
-        Instant now = Instant.now();
-        LockConfiguration configuration = new LockConfiguration("default-domain-event-publisher", now.plusSeconds(60));
-        lockExecutor.execute(() -> doPublish(size, containsPreviousFailed), configuration);
+    @Override
+    public void publishNextBatch() {
+        publishNextBatch(50);
     }
 
-    private Void doPublish(int size, boolean containsPreviousFailed) {
-        List<DomainEvent> newestEvents = eventDao.nextPublishBatch(size, containsPreviousFailed);
+    public void publishNextBatch(int size) {
+        Instant now = Instant.now();
+        LockConfiguration configuration = new LockConfiguration("default-domain-event-publisher", now.plusSeconds(60));
+        lockExecutor.execute(() -> doPublish(size), configuration);
+    }
+
+    private Void doPublish(int size) {
+        List<DomainEvent> newestEvents = eventDao.nextPublishBatch(size);
         newestEvents.forEach(event -> {
             try {
                 sender.send(event);
                 log.debug("Published {}.", event);
                 eventDao.markAsPublished(event.getId());
             } catch (Throwable t) {
-                eventDao.markAsPublishFailed(event.getId());
                 log.error("Error while publish domain event {}.", event, t);
+                eventDao.markAsPublishFailed(event.getId());
             }
         });
         return null;

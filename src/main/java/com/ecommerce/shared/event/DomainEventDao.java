@@ -9,7 +9,7 @@ public interface DomainEventDao {
 
     DomainEvent get(String eventId);
 
-    List<DomainEvent> nextPublishBatch(int size, boolean containsPreviousFailed);
+    List<DomainEvent> nextPublishBatch(int size);
 
     void markAsPublished(String eventId);
 
