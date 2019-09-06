@@ -32,8 +32,9 @@ dependencies {
     implementation('org.apache.commons:commons-collections4:4.4')
 
     api('javax.validation:validation-api:2.0.1.Final')
-    api('org.aspectj:aspectjrt:1.9.2')
     api('net.javacrumbs.shedlock:shedlock-core:2.5.0')
+    implementation('javax.inject:javax.inject:1')
+
 
     //jackson dependencies
     implementation('com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.9')
