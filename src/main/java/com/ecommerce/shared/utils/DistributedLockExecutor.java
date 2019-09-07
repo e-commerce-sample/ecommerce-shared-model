@@ -25,12 +25,14 @@ public class DistributedLockExecutor {
     public <T> T execute(Supplier<T> supplier, LockConfiguration configuration) {
         Optional<SimpleLock> lock = lockProvider.lock(configuration);
         if (!lock.isPresent()) {
+            log.debug("Failed to obtain lock {}.", configuration.getName());
             throw new LockAlreadyOccupiedException(configuration.getName());
         }
 
         log.debug("Obtained lock {}.", configuration.getName());
 
         try {
+            log.debug("Run task inside lock {}.", configuration.getName());
             return supplier.get();
         } finally {
             lock.get().unlock();
