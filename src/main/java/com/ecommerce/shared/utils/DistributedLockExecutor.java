@@ -1,6 +1,7 @@
 package com.ecommerce.shared.utils;
 
 import com.ecommerce.shared.exception.LockAlreadyOccupiedException;
+import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockConfiguration;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.core.SimpleLock;
@@ -8,10 +9,12 @@ import net.javacrumbs.shedlock.core.SimpleLock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 // Used directly by client code to run with distributed lock
+@Slf4j
 public class DistributedLockExecutor {
     private static final Duration MAX_RUN_TIME = Duration.ofMinutes(5);
 
@@ -41,22 +44,27 @@ public class DistributedLockExecutor {
     }
 
     public <T> T execute(Supplier<T> supplier, LockConfiguration configuration) {
+        String lockName = configuration.getName();
         Optional<SimpleLock> lock;
         while (true) {
             lock = lockProvider.lock(configuration);
             if (lock.isPresent()) {
+                log.debug("Obtained lock {}.", lockName);
                 break;
             }
             try {
-                TimeUnit.MILLISECONDS.sleep(200);
+                log.debug("Failed to obtain lock {}. ", lockName);
+                MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
 
         try {
+            log.debug("Lock and execute {}.", lockName);
             return supplier.get();
         } finally {
+            log.debug("Release lock {}.", lockName);
             lock.get().unlock();
         }
     }
