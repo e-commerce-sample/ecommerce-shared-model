@@ -11,8 +11,6 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
 // Used directly by client code to run with distributed lock
 @Slf4j
 public class DistributedLockExecutor {
@@ -24,54 +22,26 @@ public class DistributedLockExecutor {
         this.lockProvider = lockProvider;
     }
 
-    public <T> T tryExecute(Supplier<T> supplier, LockConfiguration configuration) {
+    public <T> T execute(Supplier<T> supplier, LockConfiguration configuration) {
         Optional<SimpleLock> lock = lockProvider.lock(configuration);
         if (!lock.isPresent()) {
             throw new LockAlreadyOccupiedException(configuration.getName());
         }
 
+        log.debug("Obtained lock {}.", configuration.getName());
+
         try {
             return supplier.get();
         } finally {
             lock.get().unlock();
-        }
-    }
-
-    public <T> T tryExecute(Supplier<T> supplier, String lockKey) {
-        LockConfiguration lockConfiguration = new LockConfiguration(lockKey, Instant.now().plus(MAX_RUN_TIME));
-        return this.tryExecute(supplier, lockConfiguration);
-
-    }
-
-    public <T> T execute(Supplier<T> supplier, LockConfiguration configuration) {
-        String lockName = configuration.getName();
-        Optional<SimpleLock> lock;
-        while (true) {
-            lock = lockProvider.lock(configuration);
-            if (lock.isPresent()) {
-                log.debug("Obtained lock {}.", lockName);
-                break;
-            }
-            try {
-                log.debug("Failed to obtain lock {}. ", lockName);
-                MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        try {
-            log.debug("Lock and execute {}.", lockName);
-            return supplier.get();
-        } finally {
-            log.debug("Release lock {}.", lockName);
-            lock.get().unlock();
+            log.debug("Released lock {}.", configuration.getName());
         }
     }
 
     public <T> T execute(Supplier<T> supplier, String lockKey) {
         LockConfiguration lockConfiguration = new LockConfiguration(lockKey, Instant.now().plus(MAX_RUN_TIME));
         return this.execute(supplier, lockConfiguration);
+
     }
 
 
