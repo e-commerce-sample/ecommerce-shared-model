@@ -10,12 +10,12 @@ import static java.time.Instant.now;
 
 @Getter
 public abstract class DomainEvent {
-    private String id = UuidGenerator.newUuid();
-    private Instant createdAt = now();
+    private String _id = UuidGenerator.newUuid();
+    private Instant _createdAt = now();
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "[" + id + "]";
+        return this.getClass().getSimpleName() + "[" + _id + "]";
     }
 
 }
