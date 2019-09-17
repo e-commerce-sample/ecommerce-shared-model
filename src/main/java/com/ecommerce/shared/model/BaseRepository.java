@@ -10,7 +10,7 @@ public abstract class BaseRepository<AR extends BaseAggregate> {
     @Inject
     private DomainEventDao eventDao;
 
-    public void save(AR aggregate) {
+    public final void save(AR aggregate) {
         eventDao.save(aggregate.getEvents());
         aggregate.clearEvents();
         doSave(aggregate);

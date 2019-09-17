@@ -9,15 +9,15 @@ import static com.google.common.collect.Lists.newArrayList;
 public abstract class BaseAggregate {
     private List<DomainEvent> events;
 
-    protected void raiseEvent(DomainEvent event) {
+    protected final void raiseEvent(DomainEvent event) {
         getEvents().add(event);
     }
 
-    void clearEvents() {
+    final void clearEvents() {
         getEvents().clear();
     }
 
-    List<DomainEvent> getEvents() {
+    final List<DomainEvent> getEvents() {
         if (events == null) {
             events = newArrayList();
         }
